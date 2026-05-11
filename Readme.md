@@ -52,3 +52,21 @@ Saya menggunakan **CloudAMQP**, sebuah layanan *managed* untuk RabbitMQ dan Lavi
 
 ### Refleksi
 Dengan menjalankan *broker* di *cloud*, aplikasi *publisher* dan *subscriber* tidak harus berada di satu mesin yang sama. Hal ini memungkinkan skalabilitas yang lebih tinggi di mana banyak *subscriber* dari berbagai lokasi berbeda dapat terhubung ke satu *queue* yang sama di internet untuk memproses beban kerja secara bersama-sama.
+
+### Simulating Slow Subscriber on Cloud
+
+Saya melakukan simulasi untuk melihat bagaimana *broker* di cloud menangani penumpukan pesan ketika *subscriber* dipaksa bekerja lambat menggunakan `thread::sleep`.
+
+**Hasil Simulasi di Cloud:**
+
+![Cloud Management Spike](image_432f7f.png)
+*Dashboard LavinMQ menunjukkan lonjakan (spike) pada grafik 'Queued messages' saat publisher mengirim banyak pesan sekaligus ke cloud.*
+
+![Subscriber Slow Terminal](image_432c59.png)
+*Terminal subscriber (NPM: 2406495786) menunjukkan pesan diproses satu per satu dengan jeda waktu, membuktikan broker cloud berhasil menyimpan pesan di antrean terlebih dahulu.*
+
+**Analisis:**
+Grafik menunjukkan lonjakan tajam pada antrean yang kemudian menurun perlahan. Ini membuktikan bahwa *message broker* di *cloud* berfungsi sebagai *buffer* yang andal; meskipun *subscriber* lambat, pesan tidak hilang dan tetap tersimpan aman di server *cloud* sampai siap diproses.
+
+### Refleksi Bonus
+Menjalankan *broker* di *cloud* membuktikan fleksibilitas arsitektur *Event-Driven*. *Publisher* dan *subscriber* tidak perlu berada di jaringan yang sama, memungkinkan sistem untuk di-skalakan secara global dengan menghubungkan berbagai layanan dari lokasi geografis yang berbeda ke satu titik koordinasi di *cloud*.
