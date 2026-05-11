@@ -14,18 +14,21 @@ impl MessageHandler<UserCreatedEventMessage> for UserCreatedHandler {
     fn handle(&self, message: Box<UserCreatedEventMessage>) -> Result<(), HandleError> {
         let ten_millis = time::Duration::from_millis(1000);
         let _now = time::Instant::now();
-        thread::sleep(ten_millis); 
+        // thread::sleep(ten_millis); 
         println!("In Rasyid's Computer [2406495786]. Message received: {:?}", message);
         Ok(())
     }
     
     fn get_handler_action(&self) -> String {
-        todo!()
+        String::from("user_created")
     }
 }
 
 fn main() {
-    let listener = CrosstownBus::new_queue_listener("amqp://guest:guest@localhost:5672".to_owned()).unwrap();
+    let url = "amqps://jilkwcrc:3B3qb2ONEYepKlWPrYqLcOVHrCXrz9S6@armadillo.rmq.cloudamqp.com/jilkwcrc".to_owned();
+    
+    let listener = CrosstownBus::new_queue_listener(url).unwrap();
+    
     let _ = listener.listen("user_created".to_owned(), UserCreatedHandler{}, crosstown_bus::QueueProperties {
         auto_delete: false, durable: false, use_dead_letter: true
     });
