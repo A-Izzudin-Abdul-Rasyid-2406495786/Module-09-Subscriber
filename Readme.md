@@ -9,3 +9,6 @@ String tersebut adalah URL atau *Connection URI* yang digunakan oleh aplikasi ki
 - **`guest` kedua**: Merupakan *password* (kata sandi) default untuk username tersebut.
 - **`localhost`**: Menunjukkan alamat *host* atau server tempat RabbitMQ berjalan. `localhost` berarti server tersebut berjalan di komputer lokal (komputer kita sendiri, yang dalam tutorial ini dijalankan via Docker).
 - **`5672`**: Merupakan nomor *port* standar/default yang digunakan oleh protokol AMQP untuk jalur komunikasi pengiriman pesan.
+
+## Simulation slow subscriber
+![slowsubscriber](slow-subscriber.png)
